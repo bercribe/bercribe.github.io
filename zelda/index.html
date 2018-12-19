@@ -6,7 +6,7 @@
     <title>Unity WebGL Player | Zelda</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-    <script src="TemplateData/UnityProgress.js"></script>  
+    <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
       var gameInstance = UnityLoader.instantiate("gameContainer", "Build/web.json", {onProgress: UnityProgress});
@@ -14,6 +14,11 @@
   </head>
   <body>
     <div class="webgl-content">
+      <div>
+        <p>Movement: Arrow Keys<br>
+        Swing Sword: Z<br>
+        Use Item: X</p>
+      </div>
       <div id="gameContainer" style="width: 960px; height: 600px"></div>
       <div class="footer">
         <div class="webgl-logo"></div>
