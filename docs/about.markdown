@@ -4,15 +4,17 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Hi, I'm mawz. I'm a software dev with a keen interest in art, music, and audiovisual experiences. My latest interests chiefly revolve around shaders, graphics programming, and video transport protocols.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+#### Socials
+[Soundcloud](https://soundcloud.com/bercribe)
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+[Youtube](https://www.youtube.com/@mawz_)
 
+[Insta](https://www.instagram.com/bercribe/)
 
-[jekyll-organization]: https://github.com/jekyll
+[Linked-in](https://www.linkedin.com/in/matoska-waltz-bb7bbb79/)
+
+[Github](https://github.com/bercribe/)
+
+[Twitter (X?)](https://twitter.com/bercribe/)

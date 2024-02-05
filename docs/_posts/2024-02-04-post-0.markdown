@@ -1,0 +1,9 @@
+---
+layout: post
+title:  "Post 0"
+date:   2024-02-04 20:24:29 -0800
+categories: posts
+---
+Hello stranger! I remade my website today using Jekyll, and it included this handy blog post template. It's unclear when or if I'll write another blog post, but if I do it'll be "Post 1". This is just a placeholder :)
+
+While you're here, feel free to check out my [portfolio](/portfolio) or socials on the [about](/about) page!
