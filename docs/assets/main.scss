@@ -1,0 +1,43 @@
+---
+---
+
+@import "minima";
+
+/* Dark Mode Styles */
+body {
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text */
+}
+
+a {
+    color: #bb86fc; /* Light purple for links */
+}
+
+a:visited {
+    color: #6b36ac;
+}
+
+a:hover {
+    color: #eee;
+}
+
+header {
+    background-color: #1f1f1f; /* Slightly lighter dark color for the header */
+}
+
+footer {
+    background-color: #1f1f1f; /* Same as header for footer */
+    color: #e0e0e0;
+}
+
+.post-header {
+    background-color: #121212;
+}
+
+.site-title, .site-title:visited {
+    color: #e0e0e0;
+}
+
+.site-nav .page-link {
+    color: #e0e0e0;
+}
