@@ -5,12 +5,12 @@
 
 /* Dark Mode Styles */
 body {
-    background-color: #121212; /* Dark background */
-    color: #e0e0e0; /* Light text */
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
 a {
-    color: #bb86fc; /* Light purple for links */
+    color: #bb86fc;
 }
 
 a:visited {
@@ -22,11 +22,11 @@ a:hover {
 }
 
 header {
-    background-color: #1f1f1f; /* Slightly lighter dark color for the header */
+    background-color: #121212;
 }
 
 footer {
-    background-color: #1f1f1f; /* Same as header for footer */
+    background-color: #1f1f1f;
     color: #e0e0e0;
 }
 
@@ -36,6 +36,10 @@ footer {
 
 .site-title, .site-title:visited {
     color: #e0e0e0;
+}
+
+.site-nav {
+    background-color: #121212;
 }
 
 .site-nav .page-link {
