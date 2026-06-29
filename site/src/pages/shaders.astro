@@ -1,0 +1,238 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import ContactCTA from "../components/ContactCTA.astro";
+
+const shaders = await getCollection("shaders");
+type Shader = (typeof shaders)[number];
+
+const grouped = new Map<string, Shader[]>();
+for (const shader of shaders) {
+    const cat = shader.data.category || "Uncategorized";
+    if (!grouped.has(cat)) grouped.set(cat, []);
+    grouped.get(cat)!.push(shader);
+}
+---
+
+<BaseLayout title="Shaders | Matoska Waltz" description="Shader gallery">
+    <div class="stack gap-20">
+        <main class="wrapper stack gap-8">
+            <Hero title="Shader Gallery" align="start">
+                <p class="tagline">
+                    Experiments from working through <a
+                        href="https://thebookofshaders.com/"
+                        >The Book of Shaders</a
+                    >.
+                </p>
+            </Hero>
+            {
+                [...grouped.entries()].map(([category, items]) => (
+                    <section>
+                        <h2 class="category-heading">{category}</h2>
+                        <div class="gallery">
+                            {items.map((shader) => (
+                                <button
+                                    class="shader-card"
+                                    data-source={shader.data.source}
+                                    data-title={shader.data.title}
+                                >
+                                    <canvas width="256" height="256" />
+                                    <p class="shader-title">
+                                        {shader.data.title}
+                                    </p>
+                                </button>
+                            ))}
+                        </div>
+                    </section>
+                ))
+            }
+        </main>
+        <ContactCTA />
+    </div>
+
+    <!-- Fullscreen modal -->
+    <div class="modal" id="shader-modal" hidden>
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"></h2>
+                <button class="modal-close" aria-label="Close">&times;</button>
+            </div>
+            <canvas id="modal-canvas" width="512" height="512"></canvas>
+        </div>
+    </div>
+</BaseLayout>
+
+<script>
+    import GlslCanvas from "glslCanvas";
+
+    const cards = document.querySelectorAll(".shader-card");
+    const modal = document.getElementById("shader-modal")!;
+    const modalCanvas = document.getElementById(
+        "modal-canvas",
+    ) as HTMLCanvasElement;
+    const modalTitle = modal.querySelector(".modal-title")!;
+    const modalClose = modal.querySelector(".modal-close")!;
+    const modalBackdrop = modal.querySelector(".modal-backdrop")!;
+    let modalSandbox: InstanceType<typeof GlslCanvas> | null = null;
+
+    cards.forEach((card) => {
+        const canvas = card.querySelector("canvas")!;
+        const source = (card as HTMLElement).dataset.source!;
+        const sandbox = new GlslCanvas(canvas);
+        sandbox.load(source);
+
+        card.addEventListener("click", () => {
+            const title = (card as HTMLElement).dataset.title!;
+            modalTitle.textContent = title;
+            modal.hidden = false;
+
+            // Sync canvas resolution to its display size so mouse uniforms are accurate
+            const rect = modalCanvas.getBoundingClientRect();
+            modalCanvas.width = rect.width * window.devicePixelRatio;
+            modalCanvas.height = rect.height * window.devicePixelRatio;
+
+            if (modalSandbox) {
+                modalSandbox.destroy();
+            }
+            modalSandbox = new GlslCanvas(modalCanvas);
+            modalSandbox.load(source);
+        });
+    });
+
+    function closeModal() {
+        modal.hidden = true;
+        if (modalSandbox) {
+            modalSandbox.destroy();
+            modalSandbox = null;
+        }
+    }
+
+    modalClose.addEventListener("click", closeModal);
+    modalBackdrop.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.hidden) closeModal();
+    });
+</script>
+
+<style>
+    .tagline {
+        font-size: var(--text-lg);
+        color: var(--gray-200);
+    }
+
+    .tagline a {
+        color: var(--link-color);
+    }
+
+    .category-heading {
+        font-size: var(--text-2xl);
+        color: var(--gray-0);
+        margin-bottom: 1rem;
+    }
+
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .shader-card {
+        background: none;
+        border: 1px solid var(--gray-800);
+        border-radius: 1rem;
+        padding: 0;
+        overflow: hidden;
+        cursor: pointer;
+        transition:
+            transform var(--theme-transition),
+            box-shadow var(--theme-transition);
+        background-color: var(--gray-999_40);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .shader-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .shader-card canvas {
+        width: 100%;
+        aspect-ratio: 1;
+        display: block;
+    }
+
+    .shader-title {
+        padding: 0.75rem;
+        margin: 0;
+        font-size: var(--text-sm);
+        color: var(--gray-300);
+        text-align: center;
+    }
+
+    /* Modal */
+
+    .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal[hidden] {
+        display: none;
+    }
+
+    .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+        position: relative;
+        background: var(--gray-999);
+        border-radius: 1.5rem;
+        padding: 1.5rem;
+        max-width: 90vw;
+        max-height: 90vh;
+        box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .modal-title {
+        font-size: var(--text-xl);
+        color: var(--gray-0);
+        margin: 0;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--gray-300);
+        cursor: pointer;
+        line-height: 1;
+        padding: 0 0.5rem;
+    }
+
+    .modal-close:hover {
+        color: var(--gray-0);
+    }
+
+    #modal-canvas {
+        width: min(70vw, 70vh);
+        height: min(70vw, 70vh);
+        display: block;
+        border-radius: 0.75rem;
+    }
+</style>

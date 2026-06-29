@@ -3,6 +3,9 @@
 install:
     cd ./site && bun install
 
+add *packages:
+    cd ./site && bun add {{packages}}
+
 dev:
     cd ./site && bun run dev
 
