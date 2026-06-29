@@ -36,6 +36,7 @@ for (const shader of shaders) {
                                     class="shader-card"
                                     data-source={shader.data.source}
                                     data-title={shader.data.title}
+                                    data-id={shader.id}
                                 >
                                     <canvas width="256" height="256" />
                                     <p class="shader-title">
@@ -60,6 +61,7 @@ for (const shader of shaders) {
                 <button class="modal-close" aria-label="Close">&times;</button>
             </div>
             <canvas id="modal-canvas" width="512" height="512"></canvas>
+            <a id="modal-source-link" target="_blank">View Source</a>
         </div>
     </div>
 </BaseLayout>
@@ -75,6 +77,9 @@ for (const shader of shaders) {
     const modalTitle = modal.querySelector(".modal-title")!;
     const modalClose = modal.querySelector(".modal-close")!;
     const modalBackdrop = modal.querySelector(".modal-backdrop")!;
+    const modalSourceLink = document.getElementById(
+        "modal-source-link",
+    ) as HTMLAnchorElement;
     let modalSandbox: InstanceType<typeof GlslCanvas> | null = null;
 
     cards.forEach((card) => {
@@ -85,7 +90,9 @@ for (const shader of shaders) {
 
         card.addEventListener("click", () => {
             const title = (card as HTMLElement).dataset.title!;
+            const id = (card as HTMLElement).dataset.id!;
             modalTitle.textContent = title;
+            modalSourceLink.href = `https://github.com/bercribe/bercribe.github.io/blob/master/shaders/${id}.frag`;
             modal.hidden = false;
 
             // Sync canvas resolution to its display size so mouse uniforms are accurate
@@ -227,6 +234,14 @@ for (const shader of shaders) {
 
     .modal-close:hover {
         color: var(--gray-0);
+    }
+
+    #modal-source-link {
+        display: block;
+        text-align: center;
+        margin-top: 0.75rem;
+        color: var(--link-color);
+        font-size: var(--text-sm);
     }
 
     #modal-canvas {
