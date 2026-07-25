@@ -3,6 +3,9 @@
 install:
     cd ./site && bun install
 
+upgrade:
+    cd ./site && bun x @astrojs/upgrade
+
 add *packages:
     cd ./site && bun add {{packages}}
 
