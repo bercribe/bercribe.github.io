@@ -5,9 +5,11 @@ install:
 
 upgrade:
     cd ./site && bun x @astrojs/upgrade
+    git add .
+    git commit -m "bump deps"
 
 add *packages:
-    cd ./site && bun add {{packages}}
+    cd ./site && bun add {{ packages }}
 
 dev:
     cd ./site && bun run dev
